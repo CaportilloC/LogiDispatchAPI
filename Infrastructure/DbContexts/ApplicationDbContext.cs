@@ -1,30 +1,28 @@
-using Application.Contracts.Services.AuthServices;
-using Application.Statics.Configurations;
-using Domain.Entities.Common;
+using Domain.Entities;
+using Infrastructure.DbContexts.ModelConfig;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace Infrastructure.DbContexts
 {
-    public partial class ApplicationDbContext : DbContext
+    public class ApplicationDbContext : DbContext
     {
-        private readonly IAuthenticatedUserService _autheticatedUserService;
-        private readonly string UserName;
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
 
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
-        , IAuthenticatedUserService autheticatedUserService
-        )
-            : base(options)
+        public DbSet<Customer> Customers => Set<Customer>();
+        public DbSet<Product> Products => Set<Product>();
+        public DbSet<Order> Orders => Set<Order>();
+        public DbSet<OrderItem> OrderItems => Set<OrderItem>();
+        public DbSet<ShippingCostRange> ShippingCostRanges => Set<ShippingCostRange>();
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
+            modelBuilder.ApplyConfiguration(new CustomerConfig());
+            modelBuilder.ApplyConfiguration(new ProductConfig());
+            modelBuilder.ApplyConfiguration(new OrderConfig());
+            modelBuilder.ApplyConfiguration(new OrderItemConfig());
+            modelBuilder.ApplyConfiguration(new ShippingCostRangeConfig());
 
-            if (base.Database.IsRelational())
-            {
-                base.Database.SetCommandTimeout(TimeSpan.FromMinutes(DbSettings.TimeoutInMinutes));
-            }
-            _autheticatedUserService = autheticatedUserService;
-            UserName = _autheticatedUserService.GetUsernameFromClaims();
-
+            base.OnModelCreating(modelBuilder);
         }
     }
 }
