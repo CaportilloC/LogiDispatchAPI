@@ -1,0 +1,12 @@
+{
+  "Version": 1,
+  "Hash": "JsKxU7F3K0iZ2MESjq83ae8ASVMqj+C61lFdnoEjMqI=",
+  "Source": "LogiDispatchAPI",
+  "BasePath": "_content/LogiDispatchAPI",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": [],
+  "Endpoints": []
+}

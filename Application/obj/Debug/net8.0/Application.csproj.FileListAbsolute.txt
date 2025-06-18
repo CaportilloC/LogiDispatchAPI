@@ -1,0 +1,15 @@
+C:\cap\MS\LogiDispatch\Application\bin\Debug\net8.0\Application.deps.json
+C:\cap\MS\LogiDispatch\Application\bin\Debug\net8.0\Application.dll
+C:\cap\MS\LogiDispatch\Application\bin\Debug\net8.0\Application.pdb
+C:\cap\MS\LogiDispatch\Application\bin\Debug\net8.0\Domain.dll
+C:\cap\MS\LogiDispatch\Application\bin\Debug\net8.0\Domain.pdb
+C:\cap\MS\LogiDispatch\Application\obj\Debug\net8.0\Application.csproj.AssemblyReference.cache
+C:\cap\MS\LogiDispatch\Application\obj\Debug\net8.0\Application.GeneratedMSBuildEditorConfig.editorconfig
+C:\cap\MS\LogiDispatch\Application\obj\Debug\net8.0\Application.AssemblyInfoInputs.cache
+C:\cap\MS\LogiDispatch\Application\obj\Debug\net8.0\Application.AssemblyInfo.cs
+C:\cap\MS\LogiDispatch\Application\obj\Debug\net8.0\Application.csproj.CoreCompileInputs.cache
+C:\cap\MS\LogiDispatch\Application\obj\Debug\net8.0\Applicat.44B5EDA2.Up2Date
+C:\cap\MS\LogiDispatch\Application\obj\Debug\net8.0\Application.dll
+C:\cap\MS\LogiDispatch\Application\obj\Debug\net8.0\refint\Application.dll
+C:\cap\MS\LogiDispatch\Application\obj\Debug\net8.0\Application.pdb
+C:\cap\MS\LogiDispatch\Application\obj\Debug\net8.0\ref\Application.dll
