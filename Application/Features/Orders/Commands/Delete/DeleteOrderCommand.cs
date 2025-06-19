@@ -1,11 +1,15 @@
-﻿using Application.DTOs.Orders;
-using Application.Wrappers.Common;
+﻿using Application.Wrappers;
 using MediatR;
 
 namespace Application.Features.Orders.Commands.Delete
 {
-    public class DeleteOrderCommand : IRequest<BaseWrapperResponse<OrderResponse>>
+    public class DeleteOrderCommand : IRequest<WrapperResponse<bool>>
     {
         public Guid Id { get; set; }
+
+        public DeleteOrderCommand(Guid id)
+        {
+            Id = id;
+        }
     }
 }

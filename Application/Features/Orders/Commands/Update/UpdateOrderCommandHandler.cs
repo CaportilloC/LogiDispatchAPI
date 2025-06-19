@@ -11,16 +11,11 @@ namespace Application.Features.Orders.Commands.Update
     public class UpdateOrderCommandHandler : IRequestHandler<UpdateOrderCommand, BaseWrapperResponse<OrderResponse>>
     {
         private readonly IOrderService _orderService;
-        private readonly IMapper _mapper;
         private readonly ILogger<UpdateOrderCommandHandler> _logger;
 
-        public UpdateOrderCommandHandler(
-            IOrderService orderService,
-            IMapper mapper,
-            ILogger<UpdateOrderCommandHandler> logger)
+        public UpdateOrderCommandHandler(IOrderService orderService, ILogger<UpdateOrderCommandHandler> logger)
         {
             _orderService = orderService;
-            _mapper = mapper;
             _logger = logger;
         }
 
@@ -28,16 +23,24 @@ namespace Application.Features.Orders.Commands.Update
         {
             try
             {
-                var dto = _mapper.Map<UpdateOrderRequest>(request);
-                var result = await _orderService.UpdateAsync(request.Id, dto);
+                var updateRequest = new UpdateOrderRequest
+                {
+                    Id = request.Id,
+                    CustomerId = request.CustomerId,
+                    OriginLatitude = (decimal)request.OriginLatitude,
+                    OriginLongitude = (decimal)request.OriginLongitude,
+                    DestinationLatitude = (decimal)request.DestinationLatitude,
+                    DestinationLongitude = (decimal)request.DestinationLongitude,
+                    Items = request.Items
+                };
 
-                return new WrapperResponse<OrderResponse>(result, "Orden actualizada correctamente.");
+                var result = await _orderService.UpdateAsync(updateRequest);
+                return new WrapperResponse<OrderResponse>(result);
             }
             catch (Exception ex)
             {
-                var message = ex.InnerException?.Message ?? ex.Message;
-                _logger.LogError(ex, "Error al actualizar la orden {OrderId}", request.Id);
-                return new WrapperResponse<OrderResponse>($"Error: {message}");
+                _logger.LogError(ex, "Error al actualizar la orden con ID {OrderId}", request.Id);
+                return new WrapperResponse<OrderResponse>($"Error al actualizar: {ex.Message}");
             }
         }
     }

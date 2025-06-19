@@ -1,38 +1,43 @@
 ﻿using Application.Contracts.Services.OrderServices;
 using Application.DTOs.Orders;
 using Application.Wrappers;
-using Application.Wrappers.Common;
-using AutoMapper;
 using MediatR;
+using Microsoft.Extensions.Logging;
 
 namespace Application.Features.Orders.Commands.Create
 {
-    public class CreateOrderCommandHandler : IRequestHandler<CreateOrderCommand, BaseWrapperResponse<OrderResponse>>
+    public class CreateOrderCommandHandler : IRequestHandler<CreateOrderCommand, WrapperResponse<OrderResponse>>
     {
         private readonly IOrderService _orderService;
-        private readonly IMapper _mapper;
+        private readonly ILogger<CreateOrderCommandHandler> _logger;
 
-        public CreateOrderCommandHandler(IOrderService orderService, IMapper mapper)
+        public CreateOrderCommandHandler(IOrderService orderService, ILogger<CreateOrderCommandHandler> logger)
         {
             _orderService = orderService;
-            _mapper = mapper;
+            _logger = logger;
         }
 
-        public async Task<BaseWrapperResponse<OrderResponse>> Handle(CreateOrderCommand request, CancellationToken cancellationToken)
+        public async Task<WrapperResponse<OrderResponse>> Handle(CreateOrderCommand request, CancellationToken cancellationToken)
         {
             try
             {
-                // Mapear el command al DTO de entrada
-                var dto = _mapper.Map<CreateOrderRequest>(request);
+                var createRequest = new CreateOrderRequest
+                {
+                    CustomerId = request.CustomerId,
+                    OriginLatitude = (decimal)request.OriginLatitude,
+                    OriginLongitude = (decimal)request.OriginLongitude,
+                    DestinationLatitude = (decimal)request.DestinationLatitude,
+                    DestinationLongitude = (decimal)request.DestinationLongitude,
+                    Items = request.Items
+                };
 
-                var result = await _orderService.CreateAsync(dto);
-
-                return new WrapperResponse<OrderResponse>(result, "Orden creada correctamente.");
+                var result = await _orderService.CreateAsync(createRequest);
+                return new WrapperResponse<OrderResponse>(result);
             }
             catch (Exception ex)
             {
-                var message = ex.InnerException?.Message ?? ex.Message;
-                return new WrapperResponse<OrderResponse>($"Error al crear la orden: {message}");
+                _logger.LogError(ex, "Error al crear una nueva orden.");
+                return new WrapperResponse<OrderResponse>($"Error al crear la orden: {ex.Message}");
             }
         }
     }

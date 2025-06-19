@@ -12,19 +12,16 @@
     <Compile Remove="Features\Commands\**" />
     <Compile Remove="Features\Instances\**" />
     <Compile Remove="Features\Queries\**" />
-    <Compile Remove="Specifications\**" />
     <EmbeddedResource Remove="DTOs\ExternalDTOs\**" />
     <EmbeddedResource Remove="DTOs\Instances\**" />
     <EmbeddedResource Remove="Features\Commands\**" />
     <EmbeddedResource Remove="Features\Instances\**" />
     <EmbeddedResource Remove="Features\Queries\**" />
-    <EmbeddedResource Remove="Specifications\**" />
     <None Remove="DTOs\ExternalDTOs\**" />
     <None Remove="DTOs\Instances\**" />
     <None Remove="Features\Commands\**" />
     <None Remove="Features\Instances\**" />
     <None Remove="Features\Queries\**" />
-    <None Remove="Specifications\**" />
   </ItemGroup>
 
   <ItemGroup>

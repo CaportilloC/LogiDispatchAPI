@@ -1,10 +1,10 @@
 ﻿using Application.DTOs.Orders;
-using Application.Wrappers.Common;
+using Application.Wrappers;
 using MediatR;
 
 namespace Application.Features.Orders.Queries.GetDeleted
 {
-    public class GetDeletedOrdersQuery : IRequest<BaseWrapperResponse<List<OrderResponse>>>
+    public class GetDeletedOrdersQuery : IRequest<WrapperResponse<List<OrderResponse>>>
     {
     }
 }
