@@ -1,10 +1,12 @@
 using Application.Attributes.Services;
+using Application.Contracts.Persistence.Common;
 using Application.Contracts.Persistence.Common.BaseRepository;
 using Application.Contracts.Services.AuthServices;
 using Application.Contracts.Services.ExternalApiServices;
 using Application.Extensions.Attributes;
 using Application.Statics.Configurations;
 using Infrastructure.DbContexts;
+using Infrastructure.Repositories;
 using Infrastructure.Repositories.Common.BaseRepository;
 using Infrastructure.Services.AuthServices;
 using Microsoft.EntityFrameworkCore;
@@ -42,6 +44,7 @@ namespace Infrastructure
         private static void RegisterRepositories(IServiceCollection services)
         {
             services.AddScoped(typeof(IBaseRepository<>), typeof(BaseRepository<>));
+            services.AddScoped<IOrderRepository, OrderRepository>();
             services.RegisterServicesDecoratedWithRegisterServiceAttribute();
         }
 

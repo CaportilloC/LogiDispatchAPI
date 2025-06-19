@@ -7,9 +7,24 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Specifications\Common\**" />
-    <EmbeddedResource Remove="Specifications\Common\**" />
-    <None Remove="Specifications\Common\**" />
+    <Compile Remove="DTOs\ExternalDTOs\**" />
+    <Compile Remove="DTOs\Instances\**" />
+    <Compile Remove="Features\Commands\**" />
+    <Compile Remove="Features\Instances\**" />
+    <Compile Remove="Features\Queries\**" />
+    <Compile Remove="Specifications\**" />
+    <EmbeddedResource Remove="DTOs\ExternalDTOs\**" />
+    <EmbeddedResource Remove="DTOs\Instances\**" />
+    <EmbeddedResource Remove="Features\Commands\**" />
+    <EmbeddedResource Remove="Features\Instances\**" />
+    <EmbeddedResource Remove="Features\Queries\**" />
+    <EmbeddedResource Remove="Specifications\**" />
+    <None Remove="DTOs\ExternalDTOs\**" />
+    <None Remove="DTOs\Instances\**" />
+    <None Remove="Features\Commands\**" />
+    <None Remove="Features\Instances\**" />
+    <None Remove="Features\Queries\**" />
+    <None Remove="Specifications\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -32,12 +47,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="DTOs\ExternalDTOs\" />
-    <Folder Include="DTOs\Instances\" />
-    <Folder Include="Features\Commands\" />
-    <Folder Include="Features\Instances\" />
-    <Folder Include="Features\Queries\" />
-    <Folder Include="Specifications\Instances\" />
+    <Compile Update="Wrappers\PagedWrapperResponse.cs">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Compile>
+    <Compile Update="Wrappers\WrapperResponse.cs">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Compile>
   </ItemGroup>
 
 </Project>

@@ -14,23 +14,23 @@ namespace Infrastructure.Tests.Repositories
         private string InMemoryDatabaseName;
         private string Username;
 
-        [SetUp]
-        public void SetUp()
-        {
-            Username = "TestUser";
-            InMemoryDatabaseName = $"temp_proyect_${Guid.NewGuid().ToString().Replace("-", "")}";
+        //[SetUp]
+        //public void SetUp()
+        //{
+        //    Username = "TestUser";
+        //    InMemoryDatabaseName = $"temp_proyect_${Guid.NewGuid().ToString().Replace("-", "")}";
 
-            var options = new DbContextOptionsBuilder<ApplicationDbContext>()
-                .UseInMemoryDatabase(databaseName: InMemoryDatabaseName)
-                .Options;
+        //    var options = new DbContextOptionsBuilder<ApplicationDbContext>()
+        //        .UseInMemoryDatabase(databaseName: InMemoryDatabaseName)
+        //        .Options;
 
-            _mockAuthenticatedUserService = new Mock<IAuthenticatedUserService>();
-            _mockAuthenticatedUserService.Setup(x => x.GetUsernameFromClaims()).Returns(Username);
+        //    _mockAuthenticatedUserService = new Mock<IAuthenticatedUserService>();
+        //    _mockAuthenticatedUserService.Setup(x => x.GetUsernameFromClaims()).Returns(Username);
 
-            _context = new ApplicationDbContext(options, _mockAuthenticatedUserService.Object);
+        //    _context = new ApplicationDbContext(options, _mockAuthenticatedUserService.Object);
 
-            //_repository = new InstanceRepository(_context);
-        }
+        //    //_repository = new InstanceRepository(_context);
+        //}
 
         [TearDown]
         public void TearDown()

@@ -1,4 +1,5 @@
 using Domain.Entities;
+using Domain.Enums;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -67,7 +68,8 @@ namespace Infrastructure.DbContexts.ModelConfig
             builder.Property(o => o.DistanceKm).IsRequired().HasPrecision(10, 2);
             builder.Property(o => o.ShippingCostUSD).IsRequired().HasPrecision(10, 2);
 
-            builder.Property(o => o.Status).IsRequired().HasDefaultValue(1);
+            builder.Property(o => o.Status)
+                    .HasConversion<int>();
 
             builder.Property(o => o.CreatedAt)
                    .HasDefaultValueSql("SYSUTCDATETIME()");
