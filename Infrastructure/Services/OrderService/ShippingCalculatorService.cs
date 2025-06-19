@@ -35,7 +35,9 @@ namespace Infrastructure.Services.OrderService
             ValidateDistanceRange(distance);
 
             var range = await _context.ShippingCostRanges
-                .FirstOrDefaultAsync(r => distance >= (double)r.MinKm && distance <= (double)r.MaxKm);
+                .Where(r => distance >= (double)r.MinKm && distance <= (double)r.MaxKm)
+                .OrderBy(r => r.MaxKm - r.MinKm) // Selecciona el rango más específico
+                .FirstOrDefaultAsync();
 
             if (range == null)
             {

@@ -1,10 +1,10 @@
 ﻿using Application.DTOs.Orders;
-using Application.Wrappers.Common;
+using Application.Wrappers;
 using MediatR;
 
 namespace Application.Features.Orders.Queries.GetById
 {
-    public class GetOrderByIdQuery : IRequest<BaseWrapperResponse<OrderResponse>>
+    public class GetOrderByIdQuery : IRequest<WrapperResponse<OrderResponse>>
     {
         public Guid Id { get; set; }
 

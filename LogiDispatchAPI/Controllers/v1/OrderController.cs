@@ -84,14 +84,18 @@ namespace LogiDispatchAPI.Controllers.v1
         }
 
         /// <summary>
-        /// Elimina (soft delete) una orden.
+        /// Elimina lógicamente una orden (soft delete).
         /// </summary>
         /// <param name="id">ID de la orden</param>
-        /// <returns>Resultado de la eliminación</returns>
+        /// <returns>Resultado de la operación</returns>
         [HttpDelete("delete/{id}")]
         public async Task<IActionResult> Delete(Guid id)
         {
-            var result = await _mediator.Send(new DeleteOrderCommand { Id = id });
+            var result = await _mediator.Send(new DeleteOrderCommand(id));
+
+            if (!result.Succeeded)
+                return BadRequest(result);
+
             return Ok(result);
         }
 
@@ -99,11 +103,15 @@ namespace LogiDispatchAPI.Controllers.v1
         /// Restaura una orden eliminada.
         /// </summary>
         /// <param name="id">ID de la orden</param>
-        /// <returns>Orden restaurada</returns>
+        /// <returns>Resultado de la operación</returns>
         [HttpPatch("restore/{id}")]
         public async Task<IActionResult> Restore(Guid id)
         {
-            var result = await _mediator.Send(new RestoreOrderCommand { Id = id });
+            var result = await _mediator.Send(new RestoreOrderCommand(id));
+
+            if (!result.Succeeded)
+                return BadRequest(result);
+
             return Ok(result);
         }
 

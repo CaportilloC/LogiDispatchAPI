@@ -1,18 +1,11 @@
 ﻿using Application.Contracts.Services.OrderServices;
-using Application.DTOs.Orders;
-using Application.Wrappers.Common;
 using Application.Wrappers;
 using MediatR;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Application.Features.Orders.Commands.Restore
 {
-    public class RestoreOrderCommandHandler : IRequestHandler<RestoreOrderCommand, BaseWrapperResponse<OrderResponse>>
+    public class RestoreOrderCommandHandler : IRequestHandler<RestoreOrderCommand, WrapperResponse<bool>>
     {
         private readonly IOrderService _orderService;
         private readonly ILogger<RestoreOrderCommandHandler> _logger;
@@ -23,18 +16,24 @@ namespace Application.Features.Orders.Commands.Restore
             _logger = logger;
         }
 
-        public async Task<BaseWrapperResponse<OrderResponse>> Handle(RestoreOrderCommand request, CancellationToken cancellationToken)
+        public async Task<WrapperResponse<bool>> Handle(RestoreOrderCommand request, CancellationToken cancellationToken)
         {
             try
             {
                 var result = await _orderService.RestoreAsync(request.Id);
-                return new WrapperResponse<OrderResponse>(result, "Orden restaurada correctamente.");
+
+                if (!result)
+                {
+                    _logger.LogWarning("Orden con ID {OrderId} no se pudo restaurar o no estaba eliminada.", request.Id);
+                    return new WrapperResponse<bool>("No se pudo restaurar la orden.");
+                }
+
+                return new WrapperResponse<bool>(true);
             }
             catch (Exception ex)
             {
-                var message = ex.InnerException?.Message ?? ex.Message;
-                _logger.LogError(ex, "Error al restaurar la orden {OrderId}", request.Id);
-                return new WrapperResponse<OrderResponse>($"Error: {message}");
+                _logger.LogError(ex, "Error al restaurar la orden con ID {OrderId}", request.Id);
+                return new WrapperResponse<bool>($"Error al restaurar la orden: {ex.Message}");
             }
         }
     }

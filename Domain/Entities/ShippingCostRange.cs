@@ -1,6 +1,8 @@
-﻿namespace Domain.Entities
+﻿using Domain.Entities.Common;
+
+namespace Domain.Entities
 {
-    public class ShippingCostRange
+    public class ShippingCostRange : BaseEntity
     {
         public int Id { get; set; }
 

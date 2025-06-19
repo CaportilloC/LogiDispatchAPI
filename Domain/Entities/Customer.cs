@@ -1,6 +1,8 @@
-﻿namespace Domain.Entities
+﻿using Domain.Entities.Common;
+
+namespace Domain.Entities
 {
-    public class Customer
+    public class Customer : BaseEntity
     {
         public Guid Id { get; set; }
 

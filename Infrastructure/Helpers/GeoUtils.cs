@@ -6,6 +6,9 @@
 
         public static double CalculateDistanceKm(double originLat, double originLon, double destLat, double destLon)
         {
+            ValidateCoordinates(originLat, originLon);
+            ValidateCoordinates(destLat, destLon);
+
             double latDeltaRad = ToRadians(destLat - originLat);
             double lonDeltaRad = ToRadians(destLon - originLon);
 
@@ -24,6 +27,14 @@
         private static double ToRadians(double degrees)
         {
             return degrees * Math.PI / 180.0;
+        }
+
+        private static void ValidateCoordinates(double latitude, double longitude)
+        {
+            if (latitude < -90 || latitude > 90)
+                throw new ArgumentOutOfRangeException(nameof(latitude), "Latitude must be between -90 and 90 degrees.");
+            if (longitude < -180 || longitude > 180)
+                throw new ArgumentOutOfRangeException(nameof(longitude), "Longitude must be between -180 and 180 degrees.");
         }
     }
 }

@@ -1,8 +1,9 @@
-﻿using Domain.Enums;
+﻿using Domain.Entities.Common;
+using Domain.Enums;
 
 namespace Domain.Entities
 {
-    public class Order
+    public class Order: BaseEntity
     {
         public Guid Id { get; set; }
 

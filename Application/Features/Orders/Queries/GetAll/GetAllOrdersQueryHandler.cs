@@ -7,7 +7,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Application.Features.Orders.Queries.GetAll
 {
-    public class GetAllOrdersQueryHandler : IRequestHandler<GetAllOrdersQuery, BaseWrapperResponse<List<OrderResponse>>>
+    public class GetAllOrdersQueryHandler : IRequestHandler<GetAllOrdersQuery, WrapperResponse<List<OrderResponse>>>
     {
         private readonly IOrderService _orderService;
         private readonly ILogger<GetAllOrdersQueryHandler> _logger;
@@ -18,7 +18,7 @@ namespace Application.Features.Orders.Queries.GetAll
             _logger = logger;
         }
 
-        public async Task<BaseWrapperResponse<List<OrderResponse>>> Handle(GetAllOrdersQuery request, CancellationToken cancellationToken)
+        public async Task<WrapperResponse<List<OrderResponse>>> Handle(GetAllOrdersQuery request, CancellationToken cancellationToken)
         {
             try
             {
