@@ -5,6 +5,10 @@ using Application.Statics.Configurations;
 using Infrastructure;
 using Microsoft.OpenApi.Models;
 using System.Text.Json.Serialization;
+using Application.Statics.Externals;
+using Infrastructure.DbContexts;
+using Microsoft.EntityFrameworkCore;
+using Application.Profiles;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -29,7 +33,13 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(
         c =>
         {
-            c.SwaggerDoc("v1", new OpenApiInfo { Title = "LogiDispatchAPI", Version = "v1" });
+            //c.SwaggerDoc("v1", new OpenApiInfo { Title = "GeotabConnectorServiceAPI", Version = "v1" });
+            c.SwaggerDoc("v1", new OpenApiInfo
+            {
+                Title = "LogiDispatch",
+                Version = "v1",
+                Description = "Created by: Christian Alexander Portillo - CAP"
+            });
             c.SwaggerDoc("v2", new OpenApiInfo { Title = "LogiDispatchAPI", Version = "v2" });
 
             c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
@@ -57,7 +67,6 @@ builder.Services.AddSwaggerGen(
         }
         );
 
-
 builder.Services.AddCors(options =>
 {
     options.AddPolicy(ApiAuthSettings.CorsPolicyName, builder =>
@@ -68,6 +77,12 @@ builder.Services.AddCors(options =>
         builder.SetIsOriginAllowed(origin => true);
     });
 });
+
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+
+builder.Services.AddAutoMapper(typeof(ServiceUserProfile).Assembly);
 
 var app = builder.Build();
 

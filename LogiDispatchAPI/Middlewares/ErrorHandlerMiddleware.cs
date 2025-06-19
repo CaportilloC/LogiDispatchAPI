@@ -51,10 +51,17 @@ namespace LogiDispatchAPI.Middlewares
                 case KeyNotFoundException:
                     response.StatusCode = (int)HttpStatusCode.NotFound;
                     break;
-
+                case ExternalServiceException e:
+                    response.StatusCode = (int)HttpStatusCode.BadGateway;
+                    responseModel.Errors = e.Message.ValueToOneItemList();
+                    break;
+                case ConflictException:
+                    response.StatusCode = (int)HttpStatusCode.Conflict;
+                    break;
                 default:
                     response.StatusCode = (int)HttpStatusCode.InternalServerError;
                     break;
+
             }
             var result = JsonSerializer.Serialize(responseModel);
 
