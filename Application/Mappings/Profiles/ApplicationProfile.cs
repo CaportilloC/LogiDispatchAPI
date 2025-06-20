@@ -1,4 +1,6 @@
 using Application.DTOs.Orders;
+using Application.DTOs.Orders.Customers;
+using Application.DTOs.Orders.Products;
 using Application.DTOs.Shared;
 using Application.Features.Orders.Commands.Create;
 using Application.Features.Orders.Commands.Delete;
@@ -13,6 +15,8 @@ namespace Application.Mappings.Profiles
         public ApplicationProfile()
         {
             // Commands -> Request DTOs
+            CreateMap<Product, ProductResponse>();
+            CreateMap<Customer, CustomerResponse>();
             CreateMap<CreateOrderCommand, CreateOrderRequest>();
             CreateMap<UpdateOrderCommand, UpdateOrderRequest>();
             CreateMap<DeleteOrderCommand, EntityIdDto>();

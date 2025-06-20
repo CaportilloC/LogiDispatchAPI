@@ -2,6 +2,7 @@
 using Application.Contracts.Persistence.Common.UnitOfWork;
 using Application.Contracts.Services.OrderServices;
 using Application.DTOs.Orders;
+using Application.Exceptions;
 using Application.Specifications.Orders;
 using Ardalis.Specification;
 using AutoMapper;
@@ -274,9 +275,9 @@ namespace Infrastructure.Tests.Services.OrderServiceTest
                 DestinationLatitude = 3.3m,
                 DestinationLongitude = 4.4m,
                 Items = new List<OrderItemDto>
-        {
-            new() { ProductId = Guid.NewGuid(), Quantity = 2 }
-        }
+                {
+                    new() { ProductId = Guid.NewGuid(), Quantity = 2 }
+                }
             };
 
             var fakeCustomer = new Customer { Id = request.CustomerId };
@@ -291,7 +292,7 @@ namespace Infrastructure.Tests.Services.OrderServiceTest
 
             productRepoMock
                 .Setup(r => r.GetByIdAsync(It.IsAny<Guid>(), default))
-                .ReturnsAsync((Product?)null);
+                .ReturnsAsync((Product?)null); // Simula producto no encontrado
 
             _unitOfWorkMock.Setup(u => u.Repository<Customer>()).Returns(customerRepoMock.Object);
             _unitOfWorkMock.Setup(u => u.Repository<Product>()).Returns(productRepoMock.Object);
@@ -314,7 +315,7 @@ namespace Infrastructure.Tests.Services.OrderServiceTest
             );
 
             // Act & Assert
-            var ex = Assert.ThrowsAsync<Exception>(() => _orderService.CreateAsync(request));
+            var ex = Assert.ThrowsAsync<ApiException>(() => _orderService.CreateAsync(request));
             Assert.That(ex!.Message, Does.Contain("Producto"));
         }
 
@@ -425,9 +426,9 @@ namespace Infrastructure.Tests.Services.OrderServiceTest
                 DestinationLatitude = 3.3m,
                 DestinationLongitude = 4.4m,
                 Items = new List<OrderItemDto>
-        {
-            new() { ProductId = Guid.NewGuid(), Quantity = 1 }
-        }
+                {
+                    new() { ProductId = Guid.NewGuid(), Quantity = 1 }
+                }
             };
 
             var orderRepoMock = new Mock<IBaseRepository<Order>>();
@@ -445,7 +446,7 @@ namespace Infrastructure.Tests.Services.OrderServiceTest
             );
 
             // Act & Assert
-            var ex = Assert.ThrowsAsync<Exception>(() => _orderService.UpdateAsync(request));
+            var ex = Assert.ThrowsAsync<ApiException>(() => _orderService.UpdateAsync(request));
             Assert.That(ex!.Message, Does.Contain("Orden no encontrada"));
         }
 
@@ -466,9 +467,9 @@ namespace Infrastructure.Tests.Services.OrderServiceTest
                 DestinationLatitude = 3.3m,
                 DestinationLongitude = 4.4m,
                 Items = new List<OrderItemDto>
-        {
-            new() { ProductId = productId, Quantity = 1 }
-        }
+                {
+                    new() { ProductId = productId, Quantity = 1 }
+                }
             };
 
             var existingOrder = new Order { Id = orderId };
@@ -500,7 +501,7 @@ namespace Infrastructure.Tests.Services.OrderServiceTest
                     (double)request.OriginLongitude,
                     (double)request.DestinationLatitude,
                     (double)request.DestinationLongitude))
-                .ReturnsAsync((0.5, 5.0m)); // ← Distancia inválida (menor a 1 km)
+                .ReturnsAsync((0.5, 5.0m)); // Distancia fuera de rango
 
             _orderService = new OrderService(
                 _unitOfWorkMock.Object,
@@ -510,7 +511,7 @@ namespace Infrastructure.Tests.Services.OrderServiceTest
             );
 
             // Act & Assert
-            var ex = Assert.ThrowsAsync<Exception>(() => _orderService.UpdateAsync(request));
+            var ex = Assert.ThrowsAsync<ApiException>(() => _orderService.UpdateAsync(request));
             Assert.That(ex!.Message, Does.Contain("distancia calculada está fuera del rango"));
         }
 
@@ -520,7 +521,7 @@ namespace Infrastructure.Tests.Services.OrderServiceTest
             // Arrange
             var orderId = Guid.NewGuid();
             var customerId = Guid.NewGuid();
-            var productId = Guid.NewGuid(); // ← producto que no existe
+            var productId = Guid.NewGuid(); // Producto no existente
 
             var request = new UpdateOrderRequest
             {
@@ -531,9 +532,9 @@ namespace Infrastructure.Tests.Services.OrderServiceTest
                 DestinationLatitude = 3.3m,
                 DestinationLongitude = 4.4m,
                 Items = new List<OrderItemDto>
-        {
-            new() { ProductId = productId, Quantity = 1 }
-        }
+                {
+                    new() { ProductId = productId, Quantity = 1 }
+                }
             };
 
             var existingOrder = new Order { Id = orderId };
@@ -551,7 +552,7 @@ namespace Infrastructure.Tests.Services.OrderServiceTest
                 .ReturnsAsync(customer);
             productRepoMock
                 .Setup(r => r.GetByIdAsync(It.IsAny<Guid>(), default))
-                .ReturnsAsync((Product?)null); // ← Producto no encontrado
+                .ReturnsAsync((Product?)null); // Producto no encontrado
 
             _unitOfWorkMock.Setup(u => u.Repository<Order>()).Returns(orderRepoMock.Object);
             _unitOfWorkMock.Setup(u => u.Repository<Customer>()).Returns(customerRepoMock.Object);
@@ -564,7 +565,7 @@ namespace Infrastructure.Tests.Services.OrderServiceTest
                     (double)request.OriginLongitude,
                     (double)request.DestinationLatitude,
                     (double)request.DestinationLongitude))
-                .ReturnsAsync((50.0, 15.0m)); // ← Distancia válida
+                .ReturnsAsync((50.0, 15.0m)); // Distancia válida
 
             _orderService = new OrderService(
                 _unitOfWorkMock.Object,
@@ -574,7 +575,7 @@ namespace Infrastructure.Tests.Services.OrderServiceTest
             );
 
             // Act & Assert
-            var ex = Assert.ThrowsAsync<Exception>(() => _orderService.UpdateAsync(request));
+            var ex = Assert.ThrowsAsync<ApiException>(() => _orderService.UpdateAsync(request));
             Assert.That(ex!.Message, Does.Contain("no encontrado"));
         }
 
