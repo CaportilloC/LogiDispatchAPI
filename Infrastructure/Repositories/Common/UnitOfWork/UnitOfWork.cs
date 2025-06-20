@@ -17,10 +17,8 @@ namespace Infrastructure.Repositories.Common.UnitOfWork
         private bool _disposed = false;
         private Hashtable _repositories;
         private readonly ApplicationDbContext _context = context;
-        //private IInstanceRepository _instanceRepository;
         private IProcedureRepository _procedureRepository;
 
-        //public IInstanceRepository InstanceRepository => _instanceRepository ??= new InstanceRepository(_context);
         public IProcedureRepository ProcedureRepository => _procedureRepository ??= new ProcedureRepository(_context);
 
         public async Task<int> Complete()

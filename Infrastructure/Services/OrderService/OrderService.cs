@@ -2,6 +2,7 @@
 using Application.Contracts.Persistence.Common.UnitOfWork;
 using Application.Contracts.Services.OrderServices;
 using Application.DTOs.Orders;
+using Application.Exceptions;
 using Application.Specifications.Orders;
 using AutoMapper;
 using Domain.Entities;
@@ -68,10 +69,9 @@ namespace Infrastructure.Services.OrderService
 
         public async Task<OrderResponse> CreateAsync(CreateOrderRequest request)
         {
-            // Verificar si el cliente existe (puede delegarse al handler si prefieres)
             var customer = await _unitOfWork.Repository<Customer>().GetByIdAsync(request.CustomerId);
             if (customer == null)
-                throw new Exception("Cliente no encontrado.");
+                throw new ApiException("Cliente no encontrado.");
 
             // Calcular distancia y costo de envío (usando servicio async)
             var (distanceKm, shippingCost) = await _shippingCalculatorService.CalculateShippingAsync(
@@ -100,7 +100,7 @@ namespace Infrastructure.Services.OrderService
             {
                 var product = await _unitOfWork.Repository<Product>().GetByIdAsync(item.ProductId);
                 if (product == null)
-                    throw new Exception($"Producto con ID {item.ProductId} no encontrado.");
+                    throw new ApiException($"Producto con ID {item.ProductId} no encontrado.");
 
                 order.OrderItems.Add(new OrderItem
                 {
@@ -121,15 +121,14 @@ namespace Infrastructure.Services.OrderService
 
         public async Task<OrderResponse> UpdateAsync(UpdateOrderRequest request)
         {
-            // Buscar la orden existente
             var order = await _unitOfWork.Repository<Order>().GetByIdAsync(request.Id);
             if (order == null || order.DeletedAt != null)
-                throw new Exception("Orden no encontrada o fue eliminada.");
+                throw new ApiException("Orden no encontrada o fue eliminada.");
 
             // Verificar si el nuevo cliente existe
             var customer = await _unitOfWork.Repository<Customer>().GetByIdAsync(request.CustomerId);
             if (customer == null)
-                throw new Exception("Cliente no encontrado.");
+                throw new ApiException("Cliente no encontrado.");
 
             // Calcular nueva distancia y costo
             var (distanceKm, shippingCost) = await _shippingCalculatorService.CalculateShippingAsync(
@@ -141,7 +140,7 @@ namespace Infrastructure.Services.OrderService
 
             // Validar distancia permitida
             if (distanceKm < 1 || distanceKm > 1000)
-                throw new Exception("La distancia calculada está fuera del rango permitido (1–1000 km).");
+                throw new ApiException("La distancia calculada está fuera del rango permitido (1–1000 km).");
 
             // Actualizar datos de la orden
             order.CustomerId = request.CustomerId;
@@ -161,7 +160,7 @@ namespace Infrastructure.Services.OrderService
             {
                 var product = await _unitOfWork.Repository<Product>().GetByIdAsync(item.ProductId);
                 if (product == null)
-                    throw new Exception($"Producto con ID {item.ProductId} no encontrado.");
+                    throw new ApiException($"Producto con ID {item.ProductId} no encontrado.");
 
                 order.OrderItems.Add(new OrderItem
                 {

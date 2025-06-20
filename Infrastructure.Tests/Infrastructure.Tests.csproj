@@ -11,8 +11,11 @@
 
 	<ItemGroup>
 	  <Compile Remove="Fixtures\**" />
+	  <Compile Remove="Repositories\Common\BaseRepository\**" />
 	  <EmbeddedResource Remove="Fixtures\**" />
+	  <EmbeddedResource Remove="Repositories\Common\BaseRepository\**" />
 	  <None Remove="Fixtures\**" />
+	  <None Remove="Repositories\Common\BaseRepository\**" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -37,10 +40,6 @@
 
 	<ItemGroup>
 		<Using Include="NUnit.Framework" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <Folder Include="Repositories\Common\BaseRepository\" />
 	</ItemGroup>
 
 </Project>

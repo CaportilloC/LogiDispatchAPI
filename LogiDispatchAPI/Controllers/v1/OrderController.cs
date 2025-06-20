@@ -114,6 +114,5 @@ namespace LogiDispatchAPI.Controllers.v1
 
             return Ok(result);
         }
-
     }
 }
